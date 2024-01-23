@@ -16,13 +16,13 @@ import java.util.UUID;
 public class UserModel implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     // man kan skapa variabler så här
     //@Column(unique = true) makes value Unique
     @NotEmpty
-    @Size(min = 1, max = 64)
+    @Size(min = 2, max = 64)
     private String username, password;
     private boolean accountNonExpired;
     private boolean accountNonLocked;
@@ -84,6 +84,10 @@ public class UserModel implements UserDetails {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public void setPassword(String password) {

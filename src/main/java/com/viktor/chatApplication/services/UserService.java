@@ -9,11 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class UserService implements UserDetailsService {
 
     private final IUserRepository iUserRepository;
@@ -26,17 +28,17 @@ public class UserService implements UserDetailsService {
 
     // CREATE
     public UserModel createUser(UserModel user) {
+        user.setId(UUID.randomUUID());
         user.setPassword(appPasswordConfig.bCryptPasswordEncoder().encode(user.getPassword()));
         user.setAccountNonExpired(true);
-        user.setAccountNonLocked(false);
+        user.setAccountNonLocked(true);
         user.setAccountEnabled(true);
-        user.setCredentialsNonExpired(false);
+        user.setCredentialsNonExpired(true);
 
         return iUserRepository.save(user);
     }
 
     // PUTs
-
     public ResponseEntity<UserModel> updateUser(UUID id, UserModel user) {
         Optional<UserModel> existingUserOptional = iUserRepository.findById(id);
 
@@ -61,13 +63,11 @@ public class UserService implements UserDetailsService {
     }
 
     // GETs
-
     public List<UserModel> getAllUsers() {
         return iUserRepository.findAll();
     }
 
     // DELETE
-
     public void deleteUser(UUID id) {
         iUserRepository.deleteById(id);
     }

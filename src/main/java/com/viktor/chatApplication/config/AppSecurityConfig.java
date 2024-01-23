@@ -33,7 +33,7 @@ public class AppSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable) // .csrf((csrf) -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/**").permitAll()
-                        .requestMatchers("/admin-page").hasRole(ADMIN.name())
+                        .requestMatchers("/admin").hasRole(ADMIN.name())
                         .anyRequest().authenticated()
                 )
                 .formLogin(Customizer.withDefaults()) // springs egna login page

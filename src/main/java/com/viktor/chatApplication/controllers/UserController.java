@@ -15,14 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class UserController {
 
-    private final IUserRepository iUserRepository;
-    private final AppPasswordConfig appPasswordConfig;
     private final UserService userService;
 
     @Autowired
-    public UserController(IUserRepository iUserRepository, AppPasswordConfig appPasswordConfig, UserService userService) {
-        this.iUserRepository = iUserRepository;
-        this.appPasswordConfig = appPasswordConfig;
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -34,9 +30,9 @@ public class UserController {
 
     @PostMapping("/register")
     public String registerUser(
-            @Valid UserModel newUser,     // enables error messages
-            BindingResult bindingResult,    // Ties the object with result
-            Model model                     // Thymeleaf
+            @Valid UserModel newUser,                           // enables error messages
+            BindingResult bindingResult,                        // Ties the object with result
+            Model model                                         // Thymeleaf
     ){
 
         // Cheak for valid error
@@ -45,7 +41,6 @@ public class UserController {
         }
 
         // TODO - hantera dubbla data t.ex. usernames in database (helst innom model/entity)
-
 
         userService.createUser(newUser);
 
