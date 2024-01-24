@@ -1,4 +1,4 @@
-package com.viktor.chatApplication.controllers;
+package com.viktor.chatApplication.controllers.userControllers;
 
 import com.viktor.chatApplication.config.AppPasswordConfig;
 import com.viktor.chatApplication.models.UserModel;
