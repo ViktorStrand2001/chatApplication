@@ -14,5 +14,6 @@ public class AppWebConfig implements WebMvcConfigurer {
         registry.addViewController("/").setViewName("home");
         registry.addViewController("/register").setViewName("register");
         registry.addViewController("/admin").setViewName("admin-page");
+        registry.addViewController("/chat").setViewName("chat");
     }
 }
