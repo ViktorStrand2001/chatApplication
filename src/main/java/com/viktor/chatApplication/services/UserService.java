@@ -11,9 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -26,6 +24,7 @@ public class UserService implements UserDetailsService {
         this.appPasswordConfig = appPasswordConfig;
     }
 
+    // CRUD funktionalitet
     // CREATE
     public UserModel createUser(UserModel user) {
         user.setId(UUID.randomUUID());
@@ -72,6 +71,23 @@ public class UserService implements UserDetailsService {
         iUserRepository.deleteById(id);
     }
 
+    // Kollar vad användaren har för status
+    // User Status
+    private final Set<UserModel> onlineUsers = new LinkedHashSet<>();
+
+    public Set<UserModel> getOnlineUsers() {
+        return onlineUsers;
+    }
+
+    public void addOnlineUser(UserModel userModel) {
+        onlineUsers.add(userModel);
+    }
+
+    public void removeOnlineUser(UserModel userModel) {
+        onlineUsers.remove(userModel);
+    }
+
+    // implements from UserDetailsService
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return iUserRepository.findUserByUsername(username);
