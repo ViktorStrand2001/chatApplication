@@ -1,6 +1,7 @@
 package com.viktor.chatApplication.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.viktor.chatApplication.enums.Roles;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -28,19 +29,17 @@ public class UserModel implements UserDetails {
     private boolean accountNonLocked;
     private boolean accountEnabled;
     private boolean credentialsNonExpired;
-
-    @Transient // Do NOT persist through JPA (DB)
-    @JsonIgnore // DO NOT add this attribute to API requests
-    private List<GrantedAuthority> authority;
+    @Enumerated(EnumType.STRING)
+    private Roles role;
 
     public UserModel() {}
 
-    public UserModel(String username, String password, List<GrantedAuthority> authority,
+    public UserModel(String username, String password, Roles roles,
                       boolean accountNonExpired, boolean accountNonLocked,
                       boolean accountEnabled, boolean credentialsNonExpired) {
         this.username = username;
         this.password = password;
-        this.authority = authority;
+        this.role = roles;
         this.accountNonExpired = accountNonExpired;
         this.accountNonLocked = accountNonLocked;
         this.accountEnabled = accountEnabled;
@@ -50,7 +49,7 @@ public class UserModel implements UserDetails {
     // TODO - CHECK WITH ROLES
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authority;
+        return role.getAuthorities();
     }
 
     @Override
@@ -83,6 +82,14 @@ public class UserModel implements UserDetails {
         return accountEnabled;
     }
 
+    public Roles getRole() {
+        return role;
+    }
+
+    public void setRole(Roles role) {
+        this.role = role;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }
@@ -97,10 +104,6 @@ public class UserModel implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public void setAuthority(List<GrantedAuthority> authority) {
-        this.authority = authority;
     }
 
     public void setAccountNonExpired(boolean accountNonExpired) {

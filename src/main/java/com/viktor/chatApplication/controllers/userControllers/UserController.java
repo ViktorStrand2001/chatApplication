@@ -1,6 +1,7 @@
 package com.viktor.chatApplication.controllers.userControllers;
 
 import com.viktor.chatApplication.config.AppPasswordConfig;
+import com.viktor.chatApplication.enums.Roles;
 import com.viktor.chatApplication.models.UserModel;
 import com.viktor.chatApplication.repositories.IUserRepository;
 import com.viktor.chatApplication.services.UserService;
@@ -23,7 +24,9 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public String registerUserPage(UserModel userModel){
+    public String registerUserPage(UserModel userModel, Model model){
+
+        model.addAttribute("roles", Roles.values());
 
         return "register";
     }
