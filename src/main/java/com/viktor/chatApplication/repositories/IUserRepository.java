@@ -15,5 +15,8 @@ public interface IUserRepository extends JpaRepository<UserModel, UUID> {
     List<UserModel> findAll();
 
     void deleteById(UUID id);
+
     UserDetails findUserByUsername(String username);
+
+    UserModel findByUsername(String username);
 }

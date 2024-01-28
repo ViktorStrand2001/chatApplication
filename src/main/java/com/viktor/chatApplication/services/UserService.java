@@ -6,6 +6,7 @@ import com.viktor.chatApplication.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -90,6 +91,11 @@ public class UserService implements UserDetailsService {
     // implements from UserDetailsService
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return iUserRepository.findUserByUsername(username);
+
+        UserModel userModel = iUserRepository.findByUsername(username);
+
+        return userModel;
     }
+
+
 }

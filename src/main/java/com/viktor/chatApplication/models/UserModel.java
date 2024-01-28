@@ -28,6 +28,7 @@ public class UserModel implements UserDetails {
     private boolean accountNonLocked;
     private boolean accountEnabled;
     private boolean credentialsNonExpired;
+
     @Transient // Do NOT persist through JPA (DB)
     @JsonIgnore // DO NOT add this attribute to API requests
     private List<GrantedAuthority> authority;
@@ -84,6 +85,10 @@ public class UserModel implements UserDetails {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public void setId(UUID id) {
