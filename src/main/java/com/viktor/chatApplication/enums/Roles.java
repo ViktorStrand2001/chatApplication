@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public enum Roles {
-    ADMIN("GET_POST_PUT_DELETE"),
-    USER("GET");
+    ADMIN("ADMINGET_ADMINPOST_ADMINPUT_ADMINDELETE_USERGET_USERPOST_USERPUT_USERDELETE"),
+    USER("USERGET_USERPOST_USERPUT_USERDELETE");
 
     public String getPermissions() {
         return permissions;
