@@ -11,14 +11,17 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+    // Konfigurerar meddelandebroker för att skicka meddelanden till klienter
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/topic");
         config.setApplicationDestinationPrefixes("/app");
     }
 
+    // Registrerar en WebSocket-endpoint för klientkommunikation
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
+
         registry.addEndpoint("/chat");
         registry.addEndpoint("/chat").withSockJS();
     }

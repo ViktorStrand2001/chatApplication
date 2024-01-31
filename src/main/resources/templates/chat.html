@@ -3,38 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <title>Chat</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/dist/stomp.min.js"></script>
+    <style>
+    .my-message {
+        max-width: 17ch;
+        word-wrap: break-word;
+        background-color: #3498db;
+        color: #fff;
+        border-radius: 8px;
+        padding: 8px;
+        margin-left: auto;
+        margin-top: 3px;
+        margin-right: 10px;
+    }
+
+    .other-message {
+        max-width: 17ch;
+        word-wrap: break-word;
+        background-color: #ccc;
+        color: #000;
+        border-radius: 8px;
+        padding: 8px;
+        margin-right: auto;
+        margin-top: 3px;
+        margin-left: 10px;
+    }
+    </style>
+
 </head>
 <body>
 
-<div class="min-w-screen min-h-screen bg-gray-100 flex items-center">
-    <div class="bg-red-200 w-full flex justify-center">
-        <div class="bg-blue-200 h-96 w-36 p-3">
-            <!-- TODO - dispay all online users here and current user-->
-             <p th:text="${currentUser}"></p>
-             <br>
-             <ul class="list-none" th:each="userModel: ${allOnlineUsers}">
-             <li th:text="${userModel.username}"></li>
-             </ul>
-         </div>
-         <div class="bg-white size-96 relative border border-black">
 
-             <div class="p-2">
-                 <!-- TODO - show all messages -->
-                <!-- TODO - add messages function-->
-                message
-            </div>
-            <div class="bg-green-200 w-full h-10 bottom-0 absolute">
-                <div class="relative">
-                    <form method="post">
-                        <input class="border border-2 border px-2 border-black rounded-lg absolute left-0" type="text" placeholder="Message">
-                        <button class="border border-black right-0 absolute" type="submit">Send</button>
-                    </form>
+<div class="min-w-screen min-h-screen bg-gray-200 flex items-center">
+    <div class="w-full flex justify-center">
+        <div class="h-96 w-36 p-3 border border-2 border-black bg-gray-500 text-white">
+            <p class="italic">User: <span th:text="${currentUser}"></span></p>
+            <ul class="list-none pt-2" th:each="userModel : ${allUsers}">
+                <span class="italic">Other users:</span>
+                <li th:text="${userModel.username}"></li>
+            </ul>
+        </div>
+        <!-- TODO - edit / delete knapp ens användare meddelanden -->
+        <!-- TODO - klicak på ett meddelande gettar meddelande så man kan updatera -->
+        <div>
+            <div class="bg-gray-100 size-96 relative border border-2 border-black overflow-y-auto max-h-96"
+            id="messageContainer">
+                <div th:each="messageModel : ${messageHistory}"
+                     th:class="${messageModel.sender == currentUser ? 'my-message' : 'other-message'}">
+                    <p th:text="${messageModel.content}"></p>
                 </div>
             </div>
+            <div class="flex">
+                <button class="border border-2 border-black w-[30px] bg-red-600 font-bold"
+                        type="submit" onclick="reloadPage()">♺</button>
+                <form method="post" th:action="@{/chat}" th:object="${messageModel}">
+                    <label for="content"></label>
+                    <input class="border border-2 border border-black px-2 bg-gray-100  w-[270px] h-[40px]"
+                           id="content" name="content" type="text" th:field="*{content}" placeholder="Type message...">
+                    <button class="border border-2 border-black w-[80px] h-[39px] bg-green-200"
+                            type="submit">Send</button>
+                </form>
+            </div>
         </div>
+
     </div>
 </div>
+<script>
+    document.getElementById('messageContainer').scrollTop = document.getElementById('messageContainer').scrollHeight;
 
+    function reloadPage() {
+        window.location.reload();
+    }
+</script>
 </body>
 </html>
