@@ -7,10 +7,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 public class AppPasswordConfig {
 
-    // TODO - Login does not work!
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
-        return new BCryptPasswordEncoder(14); // Hur stark krypteringen ska vara
+        return new BCryptPasswordEncoder(14);
     }
 
 }

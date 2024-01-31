@@ -20,15 +20,17 @@ public class UserModel implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    // man kan skapa variabler så här
-    //@Column(unique = true) makes value Unique
+
+    @Column(unique = true)
     @NotEmpty
     @Size(min = 2, max = 64)
     private String username, password;
+
     private boolean accountNonExpired;
     private boolean accountNonLocked;
     private boolean accountEnabled;
     private boolean credentialsNonExpired;
+
     @Enumerated(EnumType.STRING)
     private Roles role;
 
@@ -46,7 +48,6 @@ public class UserModel implements UserDetails {
         this.credentialsNonExpired = credentialsNonExpired;
     }
 
-    // TODO - CHECK WITH ROLES
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return role.getAuthorities();
@@ -121,5 +122,9 @@ public class UserModel implements UserDetails {
     public void setCredentialsNonExpired(boolean credentialsNonExpired) {
         this.credentialsNonExpired = credentialsNonExpired;
     }
+
+
+
+
 }
 

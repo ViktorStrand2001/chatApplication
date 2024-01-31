@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -16,7 +17,8 @@ public interface IUserRepository extends JpaRepository<UserModel, UUID> {
 
     void deleteById(UUID id);
 
-    UserDetails findUserByUsername(String username);
-
     UserModel findByUsername(String username);
+
+    Optional<UserModel> findById(UUID id);
+
 }
