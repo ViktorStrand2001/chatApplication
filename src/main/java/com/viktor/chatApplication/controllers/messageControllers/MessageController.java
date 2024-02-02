@@ -65,7 +65,6 @@ public class MessageController {
             @RequestParam(value = "action", required = false) String action) throws Exception {
 
         if ("send".equals(action)) {
-            // Handle POST request (send message)
             if (bindingResult.hasErrors()) {
                 return "chat";
             }
@@ -73,12 +72,17 @@ public class MessageController {
             messageService.sendMessage(messageModel, authentication);
 
         } else if ("delete".equals(action)) {
-            // Handle DELETE request (delete message)
             Optional<MessageModel> message = messageService.getById(messageModel.getId());
             messageService.deleteMessage(message);
 
-            model.addAttribute("deleteMessage", message);
+        } else if ("put".equals(action)) {
+            Optional<MessageModel> existingMessage = messageService.getById(messageModel.getId());
+            if (existingMessage.isPresent()) {
+                MessageModel editedMessage = existingMessage.get();
+                editedMessage.setContent(messageModel.getContent());
 
+                messageService.editMessage(editedMessage.getId(), editedMessage);
+            }
         }
 
         return "redirect:/chat";
