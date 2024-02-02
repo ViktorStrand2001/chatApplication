@@ -23,10 +23,15 @@ public class MessageService {
 
     /////////////////////////  METHODS  /////////////////////////////
 
+    /////////////////////////  GET  /////////////////////////////
     public List<MessageModel> massageHistory(){
         return iMessageRepository.findAll();
     }
+    public Optional<MessageModel> getById(Long messageId){
+        return iMessageRepository.findById(messageId);
+    }
 
+    /////////////////////////  POST  /////////////////////////////
     public MessageModel sendMessage(MessageModel messageModel, Authentication authentication){
 
         String user = authentication.getName();
@@ -35,32 +40,13 @@ public class MessageService {
         return iMessageRepository.save(messageModel);
     }
 
-    public ResponseEntity<MessageModel> editMessage(Long id, MessageModel message) {
-        Optional<MessageModel> existingMessageOptional = iMessageRepository.findById(id);
+    /////////////////////////  PUT  /////////////////////////////
 
-        if (existingMessageOptional.isPresent()) {
-            MessageModel existingMessage = existingMessageOptional.get();
 
-            // Update only the non-null fields from the input message
-            if (message.getSender() != null) {
-                existingMessage.setSender(message.getSender());
-            }
-
-            if (message.getContent() != null) {
-                existingMessage.setContent(message.getContent());
-            }
-
-            if (message.getId() != null){
-                existingMessage.setId(message.getId());
-            }
-
-            iMessageRepository.save(existingMessage);
-
-            return new ResponseEntity<>(existingMessage, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    /////////////////////////  DELETE  /////////////////////////////
+    public void deleteMessage(Optional<MessageModel> message) {
+        if (message.isPresent()) {
+            iMessageRepository.deleteById(message.get().getId());
         }
     }
-
-
 }
