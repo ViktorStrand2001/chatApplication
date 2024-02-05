@@ -1,6 +1,7 @@
 package com.viktor.chatApplication.services;
 
 import com.viktor.chatApplication.models.MessageModel;
+import com.viktor.chatApplication.models.UserModel;
 import com.viktor.chatApplication.repositories.IMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -66,8 +67,12 @@ public class MessageService {
 
     /////////////////////////  DELETE  /////////////////////////////
     public void deleteMessage(Optional<MessageModel> message) {
-        if (message.isPresent()) {
-            iMessageRepository.deleteById(message.get().getId());
-        }
+        message.ifPresent(messageModel -> iMessageRepository.deleteById(messageModel.getId()));
+    }
+
+    public void deleteAllMessagesFromUser(UserModel userModel) {
+
+        iMessageRepository.deleteAllBySender(userModel);
+
     }
 }

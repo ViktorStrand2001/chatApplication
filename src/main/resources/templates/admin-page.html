@@ -3,13 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <title>Admin</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 </head>
-<body>
+<body class="bg-gray-100">
 
-<h1> Secret Admin Page </h1>
+<div class="container mx-auto mt-8">
+  <h1 class="text-3xl font-semibold mb-4">Admin Page</h1>
 
-<a th:href="@{/}">Go Home</a>
+  <a th:href="@{/}"><- Go Home</a>
 
+  <!-- User List -->
+  <div class="mt-8">
+    <h2 class="text-xl font-semibold mb-2">User List</h2>
+
+    <!-- User Card -->
+    <div class="bg-white p-4 rounded shadow-md mb-4"
+         th:each="userModel: ${userList}">
+      <div class="flex items-center justify-between">
+        <span class="text-lg font-semibold"
+        th:text="${userModel.username}"></span>
+        <span class="text-lg font-semibold"
+              th:text="${userModel.id}"></span>
+        <div class="space-x-2">
+
+          <form th:action="@{/admin-page}" method="post">
+            <input type="hidden" th:name="id" th:value="${userModel.id}">
+            <button class="bg-red-500 text-white px-4 py-2 rounded" type="submit" name="action" value="delete">Delete</button>
+          </form>
+
+          <button class="bg-blue-500 text-white px-4 py-2 rounded">Update</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

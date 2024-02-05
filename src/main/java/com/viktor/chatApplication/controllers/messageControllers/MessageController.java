@@ -5,9 +5,9 @@ import com.viktor.chatApplication.models.UserModel;
 import com.viktor.chatApplication.services.MessageService;
 import com.viktor.chatApplication.services.UserService;
 import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -56,13 +56,15 @@ public class MessageController {
     }
 
     ///////////////////  CRUD METHODS  /////////////////////
+    @PreAuthorize("hasAuthority('USERGET') and hasAuthority('USERPOST') and hasAuthority('USERPUT') and hasAuthority('USERDELETE')")
     @RequestMapping(value = "/chat", method = {RequestMethod.POST, RequestMethod.DELETE, RequestMethod.PUT})
     public String handleMessageActions(
             @Valid MessageModel messageModel,
             BindingResult bindingResult,
             Authentication authentication,
             Model model,
-            @RequestParam(value = "action", required = false) String action) throws Exception {
+            @RequestParam(value = "action", required = false)
+            String action) throws Exception {
 
         if ("send".equals(action)) {
             if (bindingResult.hasErrors()) {

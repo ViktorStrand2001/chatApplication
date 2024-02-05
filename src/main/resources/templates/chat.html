@@ -69,7 +69,7 @@
                             type="submit" name="action" value="send">Send</button>
                 </form>
 
-                <form id="editForm" style="display: none;" th:action="@{/chat}" th:method="put">
+                <form id="editForm" class="hidden" th:action="@{/chat}" th:method="put">
                     <input type="hidden" id="editMessageId" th:name="id" />
                     <input class="border border-2 border border-black px-2 bg-gray-100 w-[270px] h-[40px]"
                            type="text" id="editMessageContent" th:name="content" placeholder="Edit message..."/>

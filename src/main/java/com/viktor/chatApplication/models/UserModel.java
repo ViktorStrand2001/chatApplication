@@ -1,6 +1,5 @@
 package com.viktor.chatApplication.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.viktor.chatApplication.enums.Roles;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -9,7 +8,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -17,9 +15,9 @@ import java.util.UUID;
 public class UserModel implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(unique = true, nullable = false, updatable = false)
     private UUID id;
-
 
     @Column(unique = true)
     @NotEmpty

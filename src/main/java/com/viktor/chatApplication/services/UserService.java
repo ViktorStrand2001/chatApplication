@@ -1,6 +1,7 @@
 package com.viktor.chatApplication.services;
 
 import com.viktor.chatApplication.config.AppPasswordConfig;
+import com.viktor.chatApplication.models.MessageModel;
 import com.viktor.chatApplication.models.UserModel;
 import com.viktor.chatApplication.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,6 @@ public class UserService implements UserDetailsService {
     // CRUD funktionalitet
     // CREATE
     public UserModel createUser(UserModel user) {
-        user.setId(UUID.randomUUID());
         user.setPassword(appPasswordConfig.bCryptPasswordEncoder().encode(user.getPassword()));
         user.setAccountNonExpired(true);
         user.setAccountNonLocked(true);
@@ -67,25 +67,12 @@ public class UserService implements UserDetailsService {
         return iUserRepository.findAll();
     }
 
+    public Optional<UserModel> getById(UUID id) {
+        return iUserRepository.findById(id);
+    }
     // DELETE
-    public void deleteUser(UUID id) {
-        iUserRepository.deleteById(id);
-    }
-
-    // Kollar vad användaren har för status
-    // User Status
-    private final Set<UserModel> onlineUsers = new LinkedHashSet<>();
-
-    public Set<UserModel> getOnlineUsers() {
-        return onlineUsers;
-    }
-
-    public void addOnlineUser(UserModel userModel) {
-        onlineUsers.add(userModel);
-    }
-
-    public void removeOnlineUser(UserModel userModel) {
-        onlineUsers.remove(userModel);
+    public void deleteUser(Optional<UserModel> user) {
+        user.ifPresent(userModel -> iUserRepository.deleteById(userModel.getId()));
     }
 
     // implements from UserDetailsService
@@ -96,6 +83,5 @@ public class UserService implements UserDetailsService {
 
         return userModel;
     }
-
 
 }
