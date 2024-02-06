@@ -53,7 +53,6 @@ public class AdminController {
             @RequestParam(value = "action", required = false)
             String action
             ) throws Exception{
-
         try {
             switch (action){
                 case "delete" -> {
@@ -61,7 +60,7 @@ public class AdminController {
                     userService.deleteUser(user);
                 }
                 case "put" -> {
-
+                    userService.updateUser(userModel.getId(), userModel);
                 }
             }
         }catch (Exception e){

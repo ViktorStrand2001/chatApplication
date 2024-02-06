@@ -54,6 +54,25 @@ public class UserService implements UserDetailsService {
                 existingUser.setPassword(user.getPassword());
             }
 
+            if (user.getRole() != null) {
+                existingUser.setRole(user.getRole());
+            }
+
+            if (user.isAccountNonExpired() != existingUser.isAccountNonExpired()) {
+                existingUser.setAccountNonLocked(existingUser.isAccountNonExpired());
+            }
+
+            if (user.isAccountNonLocked() != existingUser.isAccountNonLocked()) {
+                existingUser.setAccountNonLocked(existingUser.isAccountNonLocked());
+            }
+
+            if (user.isCredentialsNonExpired() != existingUser.isAccountNonLocked()) {
+                existingUser.setCredentialsNonExpired(existingUser.isCredentialsNonExpired());
+            }
+
+            if (user.isEnabled() != existingUser.isEnabled()) {
+                existingUser.setAccountEnabled(existingUser.isEnabled());
+            }
             iUserRepository.save(existingUser);
 
             return new ResponseEntity<>(existingUser, HttpStatus.OK);
