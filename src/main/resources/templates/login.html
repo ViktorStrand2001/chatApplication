@@ -3,33 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <title>login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
 
-<form th:action="@{/login}" method="post">
+<div th:if="${param.logout}" class="mt-4 w-full text-center">
+    <p class="text-green-500">You have been logged out.</p>
+</div>
 
-    <!-- name="" Is VERY important... -->
-    <label for="username">username:</label>
-    <input name="username" placeholder="username..." type="text" id="username" required autofocus>
+<form th:action="@{/login}" method="post" class="max-w-md mx-auto mt-8 p-8 bg-white rounded-md shadow-md">
+    <div class="mb-4">
+        <label for="username" class="text-sm block font-semibold mb-2">Username:</label>
+        <input name="username" placeholder="Enter your username..." type="text" id="username" required autofocus
+               class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
+    </div>
 
-    <label for="password">password:</label>
-    <input name="password" placeholder="password..." type="password" id="password" required>
+    <div class="mb-4">
+        <label for="password" class="text-sm block font-semibold mb-2">Password:</label>
+        <input name="password" placeholder="Enter your password..." type="password" id="password" required
+               class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500">
+    </div>
 
-    <label for="remember-me">Remember-me:</label>
-    <input name="remember-me" type="checkbox" id="remember-me">
+    <div class="mb-4">
+        <label for="remember-me" class="text-sm">
+            <input name="remember-me" type="checkbox" id="remember-me" class="mr-2">
+            Remember me
+        </label>
+    </div>
 
-    <button type="submit">LOGIN</button>
+    <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+        Login
+    </button>
 
-    <div th:if="${param.error}">
-        <p class="text-danger">
+    <div th:if="${param.error}" class="mt-4">
+        <p class="text-red-500">
             [[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]
         </p>
     </div>
 </form>
-
-<div th:if="${param.logout}">
-    <p class="text-primary">You have been logged out.</p>
-</div>
-
 </body>
 </html>
