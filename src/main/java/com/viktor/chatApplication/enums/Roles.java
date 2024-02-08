@@ -42,7 +42,7 @@ public enum Roles {
         permissions.add(role);
         permissions.addAll(splitPermissions());
 
-        System.out.println("THIS IS HETAUTH: " + permissions);
+        System.out.println("THIS IS YOUR AUTH: " + permissions);
 
         return permissions;
     }
