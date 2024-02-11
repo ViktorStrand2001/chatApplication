@@ -8,8 +8,6 @@
 <body class="min-w-screen min-h-screen bg-gray-100">
 
 <div class="flex flex-col items-center justify-center h-screen">
-  <h1 class="text-4xl md:text-6xl lg:text-8xl py-10">Register NOW</h1>
-
   <div class="flex justify-center mt-10">
     <form class="w-96 bg-white rounded-lg p-8" method="post" th:action="@{/register}" th:object="${userModel}">
       <div class="flex flex-col space-y-3">
@@ -37,7 +35,8 @@
 
       <!-- Shows Multiple errors at once -->
       <ul class="pl-2 pb-2 text-red-300">
-        <li th:each="error : ${#fields.errors('password')}" th:text="${error}" class="error"></li>
+        <li th:each="error : ${#fields.errors('username')}" th:text="${error}" class="error">Username:</li>
+        <li th:each="error : ${#fields.errors('password')}" th:text="${error}" class="error">Password:</li>
       </ul>
     </form>
   </div>

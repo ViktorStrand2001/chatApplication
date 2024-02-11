@@ -46,12 +46,17 @@
 
         <div>
             <div class="bg-gray-100 size-96 relative border border-2 border-black overflow-y-auto max-h-96" id="messageContainer">
-                <div th:each="messageModel : ${messageHistory}" th:class="${messageModel.sender == currentUser ? 'my-message' : 'other-message'}">
+                <div th:each="messageModel : ${messageHistory}"
+                     th:class="${messageModel.sender == currentUser ? 'bg-blue-500 text-white my-message' : 'bg-gray-300 text-black other-message'}">
                     <form th:action="@{/chat}" th:method="post">
-                        <p th:text="${messageModel.content}"></p>
+                        <p>
+                            <span class="font-bold" th:text="${messageModel.sender}"></span>
+                            <br>
+                            <span th:text="${messageModel.content}"></span>
+                        </p>
                         <input type="hidden" th:name="id" th:value="${messageModel.id}" />
                         <button type="button" th:if="${messageModel.sender == currentUser}" th:attr="onclick='openEditForm(\'' + ${messageModel.id} + '\', \'' + ${messageModel.content} + '\')'">✎</button>
-                        <button class="delete-button" type="submit" name="action" value="delete" onclick="confirmDelete()" th:if="${messageModel.sender == currentUser}">🗑️</button>
+                        <button class="delete-button" type="submit" name="action" value="delete" onclick="confirmDelete()" th:if="${messageModel.sender == currentUser or #authorization.expression('hasRole(''ADMIN'')')}">🗑️</button>
                     </form>
                 </div>
             </div>

@@ -5,8 +5,6 @@ import com.viktor.chatApplication.models.UserModel;
 import com.viktor.chatApplication.services.MessageService;
 import com.viktor.chatApplication.services.UserService;
 import jakarta.validation.Valid;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,8 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,15 +84,5 @@ public class MessageController {
         }
 
         return "redirect:/chat";
-    }
-
-
-
-    ////////   WEBSOCKET    //////////
-    @MessageMapping("/chat")
-    @SendTo("/topic/messages")
-    public MessageModel send(MessageModel message) throws Exception {
-        String time = new SimpleDateFormat("HH:mm").format(new Date());
-        return new MessageModel(message.getId(), message.getContent(), time);
     }
 }

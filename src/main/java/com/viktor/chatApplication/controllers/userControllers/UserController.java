@@ -43,7 +43,10 @@ public class UserController {
             return "register";
         }
 
-        // TODO - hantera dubbla data t.ex. usernames in database (helst innom model/entity)
+        if (userService.doesUsernameExist(newUser.getUsername())) {
+            bindingResult.rejectValue("username", "error.userModel", "Username already exists");
+            return "register";
+        }
 
         userService.createUser(newUser);
 

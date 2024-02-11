@@ -93,6 +93,11 @@ public class UserService implements UserDetailsService {
     public Optional<UserModel> getById(UUID id) {
         return iUserRepository.findById(id);
     }
+
+    public boolean doesUsernameExist(String username) {
+        UserModel existingUser = iUserRepository.findByUsername(username);
+        return existingUser != null;
+    }
     // DELETE
     public void deleteUser(Optional<UserModel> user) {
         try {

@@ -22,7 +22,11 @@ public class UserModel implements UserDetails {
     @Column(unique = true)
     @NotEmpty
     @Size(min = 2, max = 64)
-    private String username, password;
+    private String username;
+
+    @NotEmpty
+    @Size(min = 4, max = 64)
+    private String password;
 
     private boolean accountNonExpired;
     private boolean accountNonLocked;
