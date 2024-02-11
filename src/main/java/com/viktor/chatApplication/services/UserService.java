@@ -1,13 +1,11 @@
 package com.viktor.chatApplication.services;
 
 import com.viktor.chatApplication.config.AppPasswordConfig;
-import com.viktor.chatApplication.models.MessageModel;
 import com.viktor.chatApplication.models.UserModel;
 import com.viktor.chatApplication.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -39,18 +37,26 @@ public class UserService implements UserDetailsService {
     }
 
     // PUTs
-    public ResponseEntity<UserModel> updateUser(UUID id, UserModel user) {
+    public void updateUser(UUID id, UserModel user) {
         Optional<UserModel> existingUserOptional = iUserRepository.findById(id);
 
+        try {
         if (existingUserOptional.isPresent()) {
             UserModel existingUser = existingUserOptional.get();
 
-            // Update only the non-null fields from the input user
+            existingUser.setAccountEnabled(user.isEnabled());
+            existingUser.setAccountNonExpired(user.isAccountNonExpired());
+            existingUser.setCredentialsNonExpired(user.isCredentialsNonExpired());
+            existingUser.setAccountNonLocked(user.isAccountNonLocked());
+
             if (user.getUsername() != null) {
                 existingUser.setUsername(user.getUsername());
             }
 
-            if (user.getPassword() != null) {
+            if (!user.getPassword().equals(existingUser.getPassword())){
+                existingUser.setPassword(appPasswordConfig.bCryptPasswordEncoder().encode(existingUser.getPassword()));
+                System.out.println("new password : " + existingUser.getPassword());
+            }else{
                 existingUser.setPassword(user.getPassword());
             }
 
@@ -58,26 +64,24 @@ public class UserService implements UserDetailsService {
                 existingUser.setRole(user.getRole());
             }
 
-            if (user.isAccountNonExpired() != existingUser.isAccountNonExpired()) {
-                existingUser.setAccountNonLocked(existingUser.isAccountNonExpired());
+            if (
+                existingUser.isAccountNonExpired() == false ||
+                existingUser.isAccountNonLocked() == false ||
+                existingUser.isCredentialsNonExpired() == false
+            ){
+                existingUser.setAccountEnabled(false);
+            }else{
+                existingUser.setAccountEnabled(true);
             }
 
-            if (user.isAccountNonLocked() != existingUser.isAccountNonLocked()) {
-                existingUser.setAccountNonLocked(existingUser.isAccountNonLocked());
-            }
-
-            if (user.isCredentialsNonExpired() != existingUser.isAccountNonLocked()) {
-                existingUser.setCredentialsNonExpired(existingUser.isCredentialsNonExpired());
-            }
-
-            if (user.isEnabled() != existingUser.isEnabled()) {
-                existingUser.setAccountEnabled(existingUser.isEnabled());
-            }
             iUserRepository.save(existingUser);
 
-            return new ResponseEntity<>(existingUser, HttpStatus.OK);
+            System.out.println();
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        }catch (Exception e){
+            System.out.println(e);
         }
     }
 
@@ -91,7 +95,11 @@ public class UserService implements UserDetailsService {
     }
     // DELETE
     public void deleteUser(Optional<UserModel> user) {
-        user.ifPresent(userModel -> iUserRepository.deleteById(userModel.getId()));
+        try {
+            user.ifPresent(userModel -> iUserRepository.deleteById(userModel.getId()));
+        }catch (Exception e){
+            System.out.println(e);
+        }
     }
 
     // implements from UserDetailsService

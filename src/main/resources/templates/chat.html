@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <title>Chat</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/dist/stomp.min.js"></script>
     <style>
     .my-message {
         max-width: 17ch;
@@ -40,8 +38,8 @@
     <div class="w-full flex justify-center">
         <div class="h-96 w-36 p-3 border border-2 border-black bg-gray-500 text-white">
             <p class="italic">User: <span th:text="${currentUser}"></span></p>
+            <p class="italic">Other users:</p>
             <ul class="list-none pt-2" th:each="userModel : ${allUsers}">
-                <span class="italic">Other users:</span>
                 <li th:text="${userModel.username}"></li>
             </ul>
         </div>
@@ -69,7 +67,7 @@
                             type="submit" name="action" value="send">Send</button>
                 </form>
 
-                <form id="editForm" class="hidden" th:action="@{/chat}" th:method="put">
+                <form id="editForm" class="hidden" th:action="@{/chat}" th:method="post">
                     <input type="hidden" id="editMessageId" th:name="id" />
                     <input class="border border-2 border border-black px-2 bg-gray-100 w-[270px] h-[40px]"
                            type="text" id="editMessageContent" th:name="content" placeholder="Edit message..."/>

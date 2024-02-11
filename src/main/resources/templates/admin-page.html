@@ -4,22 +4,16 @@
   <meta charset="UTF-8">
   <title>Admin</title>
   <script src="https://cdn.tailwindcss.com"></script>
-<style>
-  #overlay{
-    display: none;
-  }
-</style>
-
 </head>
 <body class="bg-gray-100">
 
-<div class="container mx-auto mt-8">
-  <h1 class="text-3xl font-semibold mb-4 ml-5">Admin Page</h1>
+<div class="container mx-auto mt-10">
+  <h1 class="text-3xl font-semibold mb-4 ml-5">Welcome Admin!</h1>
 
-  <a th:href="@{/}" class="ml-5">< Go Home</a>
+  <a th:href="@{/}" class="ml-5"><- Go Home</a>
 
   <div class="border border-gray-300 p-4 m-10 ml-20 mr-20 rounded">
-    <form id="updateForm" th:action="@{/admin-page}" th:method="put">
+    <form id="updateForm" th:action="@{/admin-page}" th:method="post">
       <input type="hidden" id="updateUserId" th:name="id" />
 
       <div class="mb-4">
@@ -40,15 +34,30 @@
         </select>
       </div>
 
-      <!-- TODO - update  AccountNonExpired those not work!-->
-
-      <div class="mb-4">
-        <label for="updateUserAccountNonExpired" class="block text-gray-700 text-sm font-bold mb-2">Account Non-Expired:</label>
-        <select class="border border-2 border-gray-300 px-3 py-2 w-full" id="updateUserAccountNonExpired" th:name="accountNonExpired">
-          <option value="true" th:selected="${userModel.accountNonExpired} == true">True</option>
-          <option value="false" th:selected="${userModel.accountNonExpired} == false">False</option>
-        </select>
+      <div class="grid grid-rows-4 grid-flow-col gap-x-2">
+      <select th:name="accountNonExpired" th:field="${userModel.accountNonExpired}">
+        <option th:value="true" th:selected="${userModel.accountNonExpired == true}">Account Non-Expired</option>
+        <option th:value="false" th:selected="${userModel.accountNonExpired == false}">Account Expired</option>
+      </select>
+      <br>
+      <select th:name="accountNonLocked" th:field="${userModel.accountNonLocked}">
+        <option th:value="true" th:selected="${userModel.accountNonLocked == true}">Account Non-Locked</option>
+        <option th:value="false" th:selected="${userModel.accountNonLocked == false}">Account Locked</option>
+      </select>
+      <br>
+      <select th:name="credentialsNonExpired" th:field="${userModel.credentialsNonExpired}">
+        <option th:value="true" th:selected="${userModel.credentialsNonExpired == true}">Credentials Non-Expired</option>
+        <option th:value="false" th:selected="${userModel.credentialsNonExpired == false}">Credentials Expired</option>
+      </select>
+      <br>
+      <select th:name="accountEnabled" th:field="${userModel.accountEnabled}">
+        <option th:value="true" th:selected="${userModel.accountEnabled == true}">Account Enabled</option>
+        <option th:value="false" th:selected="${userModel.accountEnabled == false}">Account Disabled</option>
+      </select>
       </div>
+
+
+
 
       <div class="flex justify-center">
       <button class="border border-black h-[39px] p-2 pl-5 pr-5 rounded-lg bg-blue-500 text-white hover:bg-blue-600"
@@ -76,7 +85,7 @@
             <button class="bg-red-500 text-white px-4 py-2 rounded" type="submit" name="action" value="delete">Delete</button>
           </form>
 
-          <button type="button" th:attr="onclick='openEditForm(\'' + ${userModel.id} + '\', \'' + ${userModel.username} + '\', \'' + ${userModel.password} + '\', \'' + ${userModel.role} + '\', \'' + ${userModel.accountNonExpired} + '\')'"
+          <button type="button" th:attr="onclick='openEditForm(\'' + ${userModel.id} + '\', \'' + ${userModel.username} + '\', \'' + ${userModel.password} + '\', \'' + ${userModel.role} + '\', \'' + ${userModel.accountNonExpired} + '\', \'' + ${userModel.accountNonLocked} + '\', \'' + ${userModel.credentialsNonExpired} + '\', \'' + ${userModel.accountEnabled} + '\')'"
                   class="bg-blue-500 text-white px-4 py-2 rounded">Update</button>
         </div>
       </div>
@@ -84,16 +93,15 @@
   </div>
 </div>
 <script>
-  function openEditForm(userId, username, password, role, accountNonExpired) {
+  function openEditForm(userId, username, password, role, accountNonExpired, accountNonLocked, credentialsNonExpired, accountEnabled) {
         document.getElementById('updateUserId').value = userId;
         document.getElementById('updateUsername').value = username;
         document.getElementById('updateUserPassword').value = password;
         document.getElementById('updateUserRole').value = role;
-        document.getElementById('updateUserAccountNonExpired').value = accountNonExpired.toString();
 
-        window.scrollTo({
+    window.scrollTo({
         top: 0,
-        behavior: 'smooth' // Optional: Adds smooth scrolling effect
+        behavior: 'smooth'
     });
     }
 </script>

@@ -81,6 +81,10 @@ public class UserModel implements UserDetails {
         return accountEnabled;
     }
 
+    public boolean isAccountEnabled() {
+        return accountEnabled;
+    }
+
     public Roles getRole() {
         return role;
     }
@@ -121,8 +125,18 @@ public class UserModel implements UserDetails {
         this.credentialsNonExpired = credentialsNonExpired;
     }
 
-
-
-
+    @Override
+    public String toString() {
+        return "UserModel{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", accountNonExpired=" + accountNonExpired +
+                ", accountNonLocked=" + accountNonLocked +
+                ", accountEnabled=" + accountEnabled +
+                ", credentialsNonExpired=" + credentialsNonExpired +
+                ", role=" + role +
+                '}';
+    }
 }
 
