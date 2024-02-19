@@ -62,27 +62,31 @@ public class MessageController {
             @RequestParam(value = "action", required = false)
             String action) throws Exception {
 
-        if ("send".equals(action)) {
-            if (bindingResult.hasErrors()) {
-                return "chat";
+        switch(action){
+
+            case "send" -> {
+                if (bindingResult.hasErrors()) {
+                    return "chat";
+                }
+                messageService.sendMessage(messageModel, authentication);
             }
 
-            messageService.sendMessage(messageModel, authentication);
-
-        } else if ("delete".equals(action)) {
-            Optional<MessageModel> message = messageService.getById(messageModel.getId());
-            messageService.deleteMessage(message);
-
-        } else if ("put".equals(action)) {
-            Optional<MessageModel> existingMessage = messageService.getById(messageModel.getId());
-            if (existingMessage.isPresent()) {
-                MessageModel editedMessage = existingMessage.get();
-                editedMessage.setContent(messageModel.getContent());
-
-                messageService.editMessage(editedMessage.getId(), editedMessage);
+            case "delete" -> {
+                Optional<MessageModel> message = messageService.getById(messageModel.getId());
+                messageService.deleteMessage(message);
             }
+
+            case "put" ->{
+                Optional<MessageModel> existingMessage = messageService.getById(messageModel.getId());
+                if (existingMessage.isPresent()) {
+                    MessageModel editedMessage = existingMessage.get();
+                    editedMessage.setContent(messageModel.getContent());
+
+                    messageService.editMessage(editedMessage.getId(), editedMessage);
+                }
+            }
+            default -> System.out.println("Nothing happened!");
         }
-
         return "redirect:/chat";
     }
 }

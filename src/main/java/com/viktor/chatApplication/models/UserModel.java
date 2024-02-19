@@ -20,7 +20,7 @@ public class UserModel implements UserDetails {
     private UUID id;
 
     @Column(unique = true)
-    @NotEmpty
+    @NotEmpty(message = "Invalid username")
     @Size(min = 2, max = 64)
     private String username;
 
