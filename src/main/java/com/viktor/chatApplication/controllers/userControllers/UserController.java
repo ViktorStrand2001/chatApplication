@@ -1,9 +1,7 @@
 package com.viktor.chatApplication.controllers.userControllers;
 
-import com.viktor.chatApplication.config.AppPasswordConfig;
 import com.viktor.chatApplication.enums.Roles;
 import com.viktor.chatApplication.models.UserModel;
-import com.viktor.chatApplication.repositories.IUserRepository;
 import com.viktor.chatApplication.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +31,11 @@ public class UserController {
 
     @PostMapping("/register")
     public String registerUser(
-            @Valid UserModel newUser,                           // enables error messages
-            BindingResult bindingResult,                        // Ties the object with result
-            Model model                                         // Thymeleaf
+            @Valid UserModel newUser,
+            BindingResult bindingResult,
+            Model model
     ){
 
-        // Cheak for valid error
         if (bindingResult.hasErrors()){
             return "register";
         }
@@ -50,7 +47,7 @@ public class UserController {
 
         userService.createUser(newUser);
 
-        return "redirect:/login"; // efter som vi använder thleaf kan man skriva register istället för register.html
+        return "redirect:/login";
     }
 
 }

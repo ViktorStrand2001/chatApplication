@@ -34,7 +34,6 @@
         </div>
       </div>
 
-      <!-- Shows Multiple errors at once -->
       <ul class="pl-2 pb-2 text-red-300">
         <li th:each="error : ${#fields.errors('username')}" th:text="${error}" class="error">Username:</li>
         <li th:each="error : ${#fields.errors('password')}" th:text="${error}" class="error">Password:</li>

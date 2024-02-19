@@ -1,7 +1,6 @@
 package com.viktor.chatApplication.services;
 
 import com.viktor.chatApplication.models.MessageModel;
-import com.viktor.chatApplication.models.UserModel;
 import com.viktor.chatApplication.repositories.IMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -20,17 +19,14 @@ public class MessageService {
         this.iMessageRepository = iMessageRepository;
     }
 
-    /////////////////////////  METHODS  /////////////////////////////
-
-    /////////////////////////  GET  /////////////////////////////
     public List<MessageModel> massageHistory(){
         return iMessageRepository.findAll();
     }
+
     public Optional<MessageModel> getById(Long messageId){
         return iMessageRepository.findById(messageId);
     }
 
-    /////////////////////////  POST  /////////////////////////////
     public MessageModel sendMessage(MessageModel messageModel, Authentication authentication){
 
         String user = authentication.getName();
@@ -39,14 +35,12 @@ public class MessageService {
         return iMessageRepository.save(messageModel);
     }
 
-    /////////////////////////  PUT  /////////////////////////////
     public String editMessage(Long id, MessageModel unEditedMessage) {
         Optional<MessageModel> unEditedMessageOptional = iMessageRepository.findById(id);
 
         if (unEditedMessageOptional.isPresent()) {
             MessageModel editedMessage = unEditedMessageOptional.get();
 
-            // Update only the non-null fields from the input user
             if (unEditedMessage.getContent() != null) {
                 editedMessage.setContent(unEditedMessage.getContent());
             }
@@ -65,7 +59,6 @@ public class MessageService {
         return "Message not edited";
     }
 
-    /////////////////////////  DELETE  /////////////////////////////
     public void deleteMessage(Optional<MessageModel> message) {
         message.ifPresent(messageModel -> iMessageRepository.deleteById(messageModel.getId()));
     }

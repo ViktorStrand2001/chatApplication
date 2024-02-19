@@ -1,10 +1,8 @@
 package com.viktor.chatApplication.controllers.adminController;
 
-import com.viktor.chatApplication.models.MessageModel;
 import com.viktor.chatApplication.models.UserModel;
 import com.viktor.chatApplication.services.MessageService;
 import com.viktor.chatApplication.services.UserService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -28,8 +26,6 @@ public class AdminController {
         this.userService = userService;
         this.messageService = messageService;
     }
-
-    ///////////////////    METHODS/FUNKTIONS     /////////////////////////
 
     @GetMapping("/admin-page")
     public String registerUserPage(

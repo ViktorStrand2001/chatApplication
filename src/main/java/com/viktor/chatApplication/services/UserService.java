@@ -24,8 +24,6 @@ public class UserService implements UserDetailsService {
         this.appPasswordConfig = appPasswordConfig;
     }
 
-    // CRUD funktionalitet
-    // CREATE
     public UserModel createUser(UserModel user) {
         user.setPassword(appPasswordConfig.bCryptPasswordEncoder().encode(user.getPassword()));
         user.setAccountNonExpired(true);
@@ -36,7 +34,6 @@ public class UserService implements UserDetailsService {
         return iUserRepository.save(user);
     }
 
-    // PUTs
     public void updateUser(UUID id, UserModel user) {
         Optional<UserModel> existingUserOptional = iUserRepository.findById(id);
 
@@ -84,7 +81,6 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    // GETs
     public List<UserModel> getAllUsers() {
         return iUserRepository.findAll();
     }
@@ -97,7 +93,7 @@ public class UserService implements UserDetailsService {
         UserModel existingUser = iUserRepository.findByUsername(username);
         return existingUser != null;
     }
-    // DELETE
+
     public void deleteUser(Optional<UserModel> user) {
         try {
             user.ifPresent(userModel -> iUserRepository.deleteById(userModel.getId()));
@@ -106,7 +102,6 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    // implements from UserDetailsService
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 

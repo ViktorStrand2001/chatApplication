@@ -28,14 +28,9 @@ public class MessageController {
         this.messageService = messageService;
     }
 
-    ///////////////////////   METHODS   //////////////////////////
-
-
-    ////////   chat    //////////
     @GetMapping("/chat")
     public String chaty(Model model, MessageModel messageModel){
 
-        // Låter spring Security hantera "currentUser" alltså den som är authenticated
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
 
@@ -52,7 +47,6 @@ public class MessageController {
         return "chat";
     }
 
-    ///////////////////  CRUD METHODS  /////////////////////
     @PreAuthorize("hasAuthority('USERGET') and hasAuthority('USERPOST') and hasAuthority('USERPUT') and hasAuthority('USERDELETE')")
     @RequestMapping(value = "/chat", method = {RequestMethod.POST, RequestMethod.DELETE, RequestMethod.PUT})
     public String handleMessageActions(

@@ -106,20 +106,15 @@
      function openEditForm(messageId, messageContent) {
         document.getElementById('editMessageId').value = messageId;
         document.getElementById('editMessageContent').value = messageContent;
-        // Show your edit form (you might need to add a modal or toggle visibility)
 
-        // Show edit form
         document.getElementById('editForm').style.display = 'block';
 
-        // Hide send form
         document.getElementById('sendForm').style.display = 'none';
     }
 
     function showSendForm() {
-        // Show send form
         document.getElementById('sendForm').style.display = 'block';
 
-        // Hide edit form
         document.getElementById('editForm').style.display = 'none';
     }
 </script>
