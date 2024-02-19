@@ -69,10 +69,4 @@ public class MessageService {
     public void deleteMessage(Optional<MessageModel> message) {
         message.ifPresent(messageModel -> iMessageRepository.deleteById(messageModel.getId()));
     }
-
-    public void deleteAllMessagesFromUser(UserModel userModel) {
-
-        iMessageRepository.deleteAllBySender(userModel);
-
-    }
 }

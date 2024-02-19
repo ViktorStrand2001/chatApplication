@@ -76,7 +76,6 @@ public class UserService implements UserDetailsService {
 
             iUserRepository.save(existingUser);
 
-            System.out.println();
         } else {
             new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

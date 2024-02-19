@@ -5,6 +5,7 @@ import com.viktor.chatApplication.models.UserModel;
 import com.viktor.chatApplication.services.MessageService;
 import com.viktor.chatApplication.services.UserService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +22,7 @@ public class MessageController {
 
     private final UserService userService;
     private final MessageService messageService;
-
+    @Autowired
     public MessageController(UserService userService, MessageService messageService) {
         this.userService = userService;
         this.messageService = messageService;
